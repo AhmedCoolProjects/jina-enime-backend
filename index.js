@@ -14,11 +14,10 @@ mongoose
   })
   .then(() => {
     console.log("DB connected");
-    app.use(express.json());
-    app.use("/api", router);
-    app.listen(PORT, () => {
-      console.log("Server is running on port 5000");
-    });
   });
 
-export default app;
+app.use(express.json());
+app.use("/api", router);
+app.listen(PORT, () => {
+  console.log("Server is running on port 5000");
+});
