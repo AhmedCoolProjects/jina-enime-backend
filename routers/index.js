@@ -2,8 +2,143 @@ import { Router } from "express";
 // import studentRouter from "./StudentRouters.js";
 // import workerRouter from "./WorkerRouters.js";
 // import complainRouter from "./ComplainRouters.js";
+import Student from "../models/StudentSchema.js";
+import Worker from "../models/WorkerSchema.js";
+import Complaint from "../models/ComplaintSchema.js";
 
 const router = Router();
+const studentRouter = Router();
+const workerRouter = Router();
+const complainRouter = Router();
+
+// Student
+// Get All Students
+studentRouter.get("/all", async (req, res) => {
+  const students = await Student.find();
+  res.send(students);
+});
+// Get Student by ID
+studentRouter.get("/:id", async (req, res) => {
+  const student = await Student.findById(req.params.id);
+  res.send(student);
+});
+// Add Student
+studentRouter.post("/", async (req, res) => {
+  const student = new Student({
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    room_number: req.body.room_number,
+  });
+  await student.save();
+  res.send(`Student ${student.first_name} ${student.last_name} added`);
+});
+// Update Student
+studentRouter.post("/update/:id", async (req, res) => {
+  const student = await Student.findOneAndUpdate(
+    { _id: req.params.id },
+    {
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      room_number: req.body.room_number,
+    }
+  );
+  res.send(`Student ${student.first_name} ${student.last_name} updated`);
+});
+// Delete Student
+studentRouter.post("/delete/:id", async (req, res) => {
+  const student = await Student.findByIdAndDelete(req.params.id);
+  res.send(`Student ${student.first_name} ${student.last_name} deleted`);
+});
+// Worker
+// Get All Workers
+workerRouter.get("/all", async (req, res) => {
+  const workers = await Worker.find();
+  res.send(workers);
+});
+// Get Worker by ID
+workerRouter.get("/:id", async (req, res) => {
+  const worker = await Worker.findById(req.params.id);
+  res.send(worker);
+});
+// Add Worker
+workerRouter.post("/", async (req, res) => {
+  const worker = new Worker({
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    function: req.body.function,
+    phone_number: req.body.phone_number,
+  });
+  await worker.save();
+  res.send(`Worker ${worker.first_name} ${worker.last_name} added`);
+});
+// Update Worker
+workerRouter.post("/update/:id", async (req, res) => {
+  const worker = await Worker.findOneAndUpdate(
+    { _id: req.params.id },
+    {
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      function: req.body.function,
+      phone_number: req.body.phone_number,
+    }
+  );
+  res.send(`Worker ${worker.first_name} ${worker.last_name} updated`);
+});
+// Delete Worker
+workerRouter.post("/delete/:id", async (req, res) => {
+  const worker = await Worker.findByIdAndDelete(req.params.id);
+  res.send(`Worker ${worker.first_name} ${worker.last_name} deleted`);
+});
+// Complaint
+// Get All complaints
+complainRouter.get("/all", async (req, res) => {
+  const complaints = await Complaint.find();
+  res.send(complaints);
+});
+// Get complaint by ID
+complainRouter.get("/:id", async (req, res) => {
+  const complaint = await Complaint.findById(req.params.id);
+  res.send(complaint);
+});
+// Add complaint
+complainRouter.post("/", async (req, res) => {
+  const complaint = new Complaint({
+    title: req.body.title,
+    description: req.body.description,
+    status: req.body.status,
+    worker: req.body.worker,
+    student: req.body.student,
+    date: req.body.date,
+    image: req.body.image,
+    tags: req.body.tags,
+    type: req.body.type,
+  });
+  await complaint.save();
+  res.send(`Complaint ${complaint.title} added`);
+});
+// Update complaint
+complainRouter.post("/update/:id", async (req, res) => {
+  const complaint = await Complaint.findOneAndUpdate(
+    { _id: req.params.id },
+    {
+      title: req.body.title,
+      description: req.body.description,
+      status: req.body.status,
+      worker: req.body.worker,
+      student: req.body.student,
+      date: req.body.date,
+      image: req.body.image,
+      tags: req.body.tags,
+      type: req.body.type,
+    }
+  );
+  res.send(`Complaint ${complaint.title} updated`);
+});
+// Delete complaint
+complainRouter.post("/delete/:id", async (req, res) => {
+  const complaint = await Complaint.findByIdAndDelete(req.params.id);
+  res.send(`Complaint ${complaint.title} deleted`);
+});
 
 // Welcome
 router.get("/", (req, res) => {
