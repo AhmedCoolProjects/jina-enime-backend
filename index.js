@@ -19,4 +19,5 @@ mongoose
     app.listen(PORT, () => {
       console.log("Server is running on port 5000");
     });
-  });
+  })
+  .then(() => (module.exports = app));
