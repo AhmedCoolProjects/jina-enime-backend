@@ -145,8 +145,8 @@ router.get("/", (req, res) => {
   res.send("Welcome to the JINA ENIME API");
 });
 
-// router.use("/student", studentRouter);
-// router.use("/worker", workerRouter);
-// router.use("/complaint", complainRouter);
+router.use("/student", studentRouter);
+router.use("/worker", workerRouter);
+router.use("/complaint", complainRouter);
 
 export default router;
