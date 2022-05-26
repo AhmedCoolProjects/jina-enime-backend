@@ -8,13 +8,13 @@ dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 
-mongoose
-  .connect(process.env.DATABASE_URL, {
-    useNewUrlParser: true,
-  })
-  .then(() => {
-    console.log("DB connected");
-  });
+// mongoose
+//   .connect(process.env.DATABASE_URL, {
+//     useNewUrlParser: true,
+//   })
+//   .then(() => {
+//     console.log("DB connected");
+//   });
 
 app.use(express.json());
 app.use("/api", router);
