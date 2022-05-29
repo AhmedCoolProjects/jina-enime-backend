@@ -5,6 +5,7 @@ import { Router } from "express";
 import Student from "../models/StudentSchema.js";
 import Worker from "../models/WorkerSchema.js";
 import Complaint from "../models/ComplaintSchema.js";
+import { login, profile, register } from "../controllers/studentController.js";
 
 const router = Router();
 const studentRouter = Router();
@@ -23,14 +24,16 @@ studentRouter.get("/:id", async (req, res) => {
   res.send(student);
 });
 // Add Student
-studentRouter.post("/", async (req, res) => {
-  const student = new Student({
-    first_name: req.body.first_name,
-    last_name: req.body.last_name,
-    room_number: req.body.room_number,
-  });
-  await student.save();
-  res.send(`Student ${student.first_name} ${student.last_name} added`);
+studentRouter.post("/", (req, res) => {
+  register(req, res);
+});
+// Login Student
+studentRouter.post("/login", (req, res) => {
+  login(req, res);
+});
+// Profile Student
+studentRouter.post("/profile", (req, res, next) => {
+  profile(req, res, next);
 });
 // Update Student
 studentRouter.post("/update/:id", async (req, res) => {

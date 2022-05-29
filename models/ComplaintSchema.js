@@ -32,7 +32,7 @@ const ComplaintSchema = new mongoose.Schema({
   },
   tags: {
     type: [String],
-    required: true,
+    required: false,
   },
   type: {
     type: String,
