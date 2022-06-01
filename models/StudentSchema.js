@@ -18,6 +18,10 @@ const StudentSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
+    email_verified: {
+      type: Boolean,
+      default: false,
+    },
     room_number: {
       type: String,
       required: true,

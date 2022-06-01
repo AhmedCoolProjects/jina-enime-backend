@@ -154,46 +154,47 @@ router.get("/", (req, res) => {
   res.send("Welcome to the JINA ENIME API");
 });
 // Send Email Verification
-studentRouter.post("/sendemail", (req, res) => {
-  const EMAIL_TOKEN = jsonwebtoken.sign(
-    {
-      data: "Token Data",
-    },
-    "ourSecretKey",
-    { expiresIn: "10m" }
-  );
-  const MAIL_CONFIGURATION = {
-    from: "bargadyahmed@gmail.com",
-    to: req.body.email,
-    // Subject of Email
-    subject: "Jina ENIME | Email Verification",
-    // This would be the text of email body
-    text: `Hi! There, thanks for your interest in our services.
-           Please follow the given link to verify your email
-           https://jina-enime-backend.vercel.app/api/student/verify/${EMAIL_TOKEN},
-           
-           This link will expire in 10 minutes.
-           Thanks`,
-  };
-  sendEmailVerification(MAIL_CONFIGURATION);
-  res.send("Email Sent ...");
-});
+// studentRouter.post("/sendemail", (req, res) => {
+//   const EMAIL_TOKEN = jsonwebtoken.sign(
+//     {
+//       data: "Token Data",
+//     },
+//     "ourSecretKey",
+//     { expiresIn: "10m" }
+//   );
+//   const MAIL_CONFIGURATION = {
+//     from: "bargadyahmed@gmail.com",
+//     to: req.body.email,
+//     // Subject of Email
+//     subject: "Jina ENIME | Email Verification",
+//     // This would be the text of email body
+//     text: `Hi! There, thanks for your interest in our services.
+//            Please follow the given link to verify your email
+//            https://jina-enime-backend.vercel.app/api/student/verify/${EMAIL_TOKEN},
 
-studentRouter.get("/verify/:token", (req, res) => {
-  const { token } = req.params;
+//            This link will expire in 10 minutes.
+//            Thanks`,
+//   };
+//   sendEmailVerification(MAIL_CONFIGURATION);
+//   res.send("Email Sent ...");
+// });
 
-  // Verifing the JWT token
-  jsonwebtoken.verify(token, "ourSecretKey", function (err, decoded) {
-    if (err) {
-      console.log(err);
-      res.send(
-        "Email verification failed ;(, possibly the link is invalid or expired"
-      );
-    } else {
-      res.send("Email verifified successfully");
-    }
-  });
-});
+// studentRouter.get("/verify/:token", (req, res) => {
+//   const { token } = req.params;
+
+//   // Verifing the JWT token
+//   jsonwebtoken.verify(token, "ourSecretKey", function (err, decoded) {
+//     if (err) {
+//       console.log(err);
+//       res.send(
+//         "Email verification failed ;(, possibly the link is invalid or expired"
+//       );
+//     } else {
+//       console.log("Great");
+//       res.send("Email verifified successfully");
+//     }
+//   });
+// });
 
 router.use("/student", studentRouter);
 router.use("/worker", workerRouter);
