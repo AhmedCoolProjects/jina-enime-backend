@@ -196,7 +196,6 @@ studentRouter.get("/verify/:token", (req, res) => {
         },
       })
         .then((studentNew) => {
-          student = studentNew;
           res.send(
             `Email verified for ${studentNew.first_name} ${studentNew.last_name} with email ${studentNew.email}`
           );
