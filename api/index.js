@@ -36,9 +36,15 @@ app.use(function (req, res, next) {
       function (err, decode) {
         if (err) req.student = undefined;
         const { _id } = decode;
-        const student = Student.findById(_id);
-        req.student = student;
-        next();
+        Student.findById(_id)
+          .then((student) => {
+            req.student = student;
+            next();
+          })
+          .catch((err) => {
+            req.student = undefined;
+            next();
+          });
       }
     );
   } else {
