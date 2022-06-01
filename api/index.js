@@ -1,9 +1,10 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import router from "./routers/index.js";
+import multer from "multer";
 import jsonwebtoken from "jsonwebtoken";
 import cors from "cors";
+import router from "./routers/index.js";
 import Student from "./models/StudentSchema.js";
 
 const app = express();
