@@ -170,13 +170,29 @@ studentRouter.post("/sendemail", (req, res) => {
     // This would be the text of email body
     text: `Hi! There, thanks for your interest in our services.
            Please follow the given link to verify your email
-           https://jina-enime-backend.vercel.app/api/auth/verify/${EMAIL_TOKEN},
+           https://jina-enime-backend.vercel.app/api/student/verify/${EMAIL_TOKEN},
            
            This link will expire in 10 minutes.
            Thanks`,
   };
   sendEmailVerification(MAIL_CONFIGURATION);
   res.send("Email Sent ...");
+});
+
+studentRouter.get("/verify/:token", (req, res) => {
+  const { token } = req.params;
+
+  // Verifing the JWT token
+  jsonwebtoken.verify(token, "ourSecretKey", function (err, decoded) {
+    if (err) {
+      console.log(err);
+      res.send(
+        "Email verification failed ;(, possibly the link is invalid or expired"
+      );
+    } else {
+      res.send("Email verifified successfully");
+    }
+  });
 });
 
 router.use("/student", studentRouter);
