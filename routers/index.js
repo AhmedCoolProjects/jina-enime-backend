@@ -10,7 +10,7 @@ import {
   login,
   profile,
   register,
-  sendEmailVerification,
+  // sendEmailVerification,
 } from "../controllers/studentController.js";
 
 const router = Router();
