@@ -175,8 +175,7 @@ studentRouter.post("/sendemail", (req, res) => {
            This link will expire in 10 minutes.
            Thanks`,
   };
-  sendEmailVerification(MAIL_CONFIGURATION);
-  res.send("Email Sent ...");
+  sendEmailVerification(MAIL_CONFIGURATION, res);
 });
 
 studentRouter.get("/verify/:token", (req, res) => {

@@ -76,9 +76,9 @@ const TRANSPORTER = nodemailer.createTransport({
   },
 });
 
-export function sendEmailVerification(mail_configuration) {
+export function sendEmailVerification(mail_configuration, res) {
   TRANSPORTER.sendMail(mail_configuration, function (error, info) {
     if (error) throw Error(error);
-    return info.response;
+    res.send("Email sent: " + info.response);
   });
 }
