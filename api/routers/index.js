@@ -1,8 +1,5 @@
 import { Router } from "express";
 import jsonwebtoken from "jsonwebtoken";
-// import studentRouter from "./StudentRouters.js";
-// import workerRouter from "./WorkerRouters.js";
-// import complainRouter from "./ComplainRouters.js";
 import Student from "../models/StudentSchema.js";
 import Worker from "../models/WorkerSchema.js";
 import Complaint from "../models/ComplaintSchema.js";
@@ -154,17 +151,20 @@ router.get("/", (req, res) => {
   res.send("Welcome to the JINA ENIME API");
 });
 // Send Email Verification
-studentRouter.post("/sendemail", (req, res) => {
+studentRouter.post("/sendemail", async (req, res) => {
+  const _id = req.body._id;
+  const student = await Student.findById(_id);
+
   const EMAIL_TOKEN = jsonwebtoken.sign(
     {
-      data: "Token Data",
+      data: student,
     },
     "ourSecretKey",
     { expiresIn: "10m" }
   );
   const MAIL_CONFIGURATION = {
     from: "bargadyahmed@gmail.com",
-    to: req.body.email,
+    to: student.email,
     // Subject of Email
     subject: "Jina ENIME | Email Verification",
     // This would be the text of email body
@@ -180,7 +180,6 @@ studentRouter.post("/sendemail", (req, res) => {
 
 studentRouter.get("/verify/:token", (req, res) => {
   const { token } = req.params;
-
   // Verifing the JWT token
   jsonwebtoken.verify(token, "ourSecretKey", function (err, decoded) {
     if (err) {
@@ -189,8 +188,22 @@ studentRouter.get("/verify/:token", (req, res) => {
         "Email verification failed ;(, possibly the link is invalid or expired"
       );
     } else {
-      console.log("Great");
-      res.send("Email verifified successfully");
+      const student = decoded.data;
+      // update student
+      Student.findByIdAndUpdate(student._id, {
+        $set: {
+          email_verified: true,
+        },
+      })
+        .then((student) => {
+          res.send(
+            `Email verified for ${student.first_name} ${student.last_name} with email ${student.email}`
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+          res.send(err);
+        });
     }
   });
 });

@@ -9,6 +9,7 @@ export async function register(req, res) {
     last_name: req.body.last_name,
     room_number: req.body.room_number,
     email: req.body.email,
+    email_verified: false,
   });
   newStudent.hash_password = bcrypt.hashSync(req.body.password, 10);
   await newStudent.save(function (err, student) {
@@ -40,6 +41,7 @@ export async function login(req, res) {
           last_name: student.last_name,
           room_number: student.room_number,
           _id: student._id,
+          email_verified: student.email_verified,
         },
         "RESTFULAPIs"
       ),
@@ -79,6 +81,6 @@ const TRANSPORTER = nodemailer.createTransport({
 export function sendEmailVerification(mail_configuration, res) {
   TRANSPORTER.sendMail(mail_configuration, function (error, info) {
     if (error) throw Error(error);
-    res.send("Email sent: " + info.response);
+    res.send("Email sent:  " + info.response);
   });
 }
