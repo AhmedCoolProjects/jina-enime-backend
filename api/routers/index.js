@@ -38,11 +38,14 @@ var upload = multer({ storage: storage });
 const __dirname = path.resolve();
 
 complainRouter.post("/photos", upload.single("photo"), (req, res) => {
-  res.send(req.file.path);
-  // res.json(req.file);
+  res.send(req.file.filename);
 });
 complainRouter.get("/photo/:filename", (req, res) => {
-  res.sendFile(`uploads/${req.params.filename}`, { root: __dirname });
+  res.sendFile(`uploads/${req.params.filename}`, { root: __dirname }, (err) => {
+    if (err) {
+      res.status(404).send("File not found");
+    }
+  });
 });
 
 // Student
