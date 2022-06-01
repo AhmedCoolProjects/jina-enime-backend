@@ -23,26 +23,26 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 
-app.use(function (req, res, next) {
-  if (
-    req.headers &&
-    req.headers.authorization &&
-    req.headers.authorization.split(" ")[0] === "JWT"
-  ) {
-    jsonwebtoken.verify(
-      req.headers.authorization.split(" ")[1],
-      "RESTFULAPIs",
-      function (err, decode) {
-        if (err) req.student = undefined;
-        req.student = decode;
-        next();
-      }
-    );
-  } else {
-    req.student = undefined;
-    next();
-  }
-});
+// app.use(function (req, res, next) {
+//   if (
+//     req.headers &&
+//     req.headers.authorization &&
+//     req.headers.authorization.split(" ")[0] === "JWT"
+//   ) {
+//     jsonwebtoken.verify(
+//       req.headers.authorization.split(" ")[1],
+//       "RESTFULAPIs",
+//       function (err, decode) {
+//         if (err) req.student = undefined;
+//         req.student = decode;
+//         next();
+//       }
+//     );
+//   } else {
+//     req.student = undefined;
+//     next();
+//   }
+// });
 
 mongoose
   .connect(process.env.DATABASE_URL, {
