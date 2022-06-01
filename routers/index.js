@@ -1,11 +1,17 @@
 import { Router } from "express";
+import jsonwebtoken from "jsonwebtoken";
 // import studentRouter from "./StudentRouters.js";
 // import workerRouter from "./WorkerRouters.js";
 // import complainRouter from "./ComplainRouters.js";
 import Student from "../models/StudentSchema.js";
 import Worker from "../models/WorkerSchema.js";
 import Complaint from "../models/ComplaintSchema.js";
-import { login, profile, register } from "../controllers/studentController.js";
+import {
+  login,
+  profile,
+  register,
+  sendEmailVerification,
+} from "../controllers/studentController.js";
 
 const router = Router();
 const studentRouter = Router();
@@ -146,6 +152,31 @@ complainRouter.post("/delete/:id", async (req, res) => {
 // Welcome
 router.get("/", (req, res) => {
   res.send("Welcome to the JINA ENIME API");
+});
+// Send Email Verification
+studentRouter.post("/sendemail", (req, res) => {
+  const EMAIL_TOKEN = jsonwebtoken.sign(
+    {
+      data: "Token Data",
+    },
+    "ourSecretKey",
+    { expiresIn: "10m" }
+  );
+  const MAIL_CONFIGURATION = {
+    from: "bargadyahmed@gmail.com",
+    to: req.body.email,
+    // Subject of Email
+    subject: "Jina ENIME | Email Verification",
+    // This would be the text of email body
+    text: `Hi! There, thanks for your interest in our services.
+           Please follow the given link to verify your email
+           https://jina-enime-backend.vercel.app/api/auth/verify/${EMAIL_TOKEN},
+           
+           This link will expire in 10 minutes.
+           Thanks`,
+  };
+  sendEmailVerification(MAIL_CONFIGURATION);
+  res.send("Email Sent ...");
 });
 
 router.use("/student", studentRouter);

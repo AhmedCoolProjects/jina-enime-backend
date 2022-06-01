@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import Student from "../models/StudentSchema.js";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
 
 export async function register(req, res) {
   var newStudent = new Student({
@@ -65,4 +66,19 @@ export function profile(req, res, next) {
       message: "Invalid token",
     });
   }
+}
+
+const TRANSPORTER = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "bargadyahmed@gmail.com",
+    pass: "ltlxqhxtfnuyjgqy",
+  },
+});
+
+export function sendEmailVerification(mail_configuration) {
+  TRANSPORTER.sendMail(mail_configuration, function (error, info) {
+    if (error) throw Error(error);
+    return info.response;
+  });
 }

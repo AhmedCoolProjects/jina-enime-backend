@@ -50,7 +50,6 @@ mongoose
   })
   .then(() => {
     console.log("DB connected");
-
     app.use("/api", router);
     app.listen(PORT, () => {
       console.log("Server is running on port " + PORT);
