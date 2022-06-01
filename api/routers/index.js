@@ -1,5 +1,6 @@
 import { Router } from "express";
 import jsonwebtoken from "jsonwebtoken";
+import multer from "multer";
 import Student from "../models/StudentSchema.js";
 import Worker from "../models/WorkerSchema.js";
 import Complaint from "../models/ComplaintSchema.js";
@@ -9,11 +10,40 @@ import {
   register,
   sendEmailVerification,
 } from "../controllers/studentController.js";
+import path from "path";
 
 const router = Router();
 const studentRouter = Router();
 const workerRouter = Router();
 const complainRouter = Router();
+// const APP_LINK = "https://jina-enime-backend.vercel.app/aploads";
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.originalname.split(".")[0] +
+        "-" +
+        Date.now() +
+        "." +
+        file.originalname.split(".")[1]
+    );
+  },
+});
+
+var upload = multer({ storage: storage });
+const __dirname = path.resolve();
+
+complainRouter.post("/photos", upload.single("photo"), (req, res) => {
+  res.send(req.file.path);
+  // res.json(req.file);
+});
+complainRouter.get("/photo/:filename", (req, res) => {
+  res.sendFile(`uploads/${req.params.filename}`, { root: __dirname });
+});
 
 // Student
 // Get All Students
