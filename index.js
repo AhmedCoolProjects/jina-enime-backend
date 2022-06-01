@@ -10,16 +10,16 @@ dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3000",
-      "https://jina-enime.vercel.app",
-      "https://jina-enime.vercel.app/",
-    ],
-    methods: ["GET", "POST"],
-  })
-);
+// app.use(
+//   cors({
+//     origin: [
+//       "http://localhost:3000",
+//       "https://jina-enime.vercel.app",
+//       "https://jina-enime.vercel.app/",
+//     ],
+//     methods: ["GET", "POST"],
+//   })
+// );
 
 app.use(express.json());
 
