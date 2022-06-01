@@ -188,16 +188,17 @@ studentRouter.get("/verify/:token", (req, res) => {
         "Email verification failed ;(, possibly the link is invalid or expired"
       );
     } else {
-      const student = decoded.data;
+      var student = decoded.data;
       // update student
       Student.findByIdAndUpdate(student._id, {
         $set: {
           email_verified: true,
         },
       })
-        .then((student) => {
+        .then((studentNew) => {
+          student = studentNew;
           res.send(
-            `Email verified for ${student.first_name} ${student.last_name} with email ${student.email}`
+            `Email verified for ${studentNew.first_name} ${studentNew.last_name} with email ${studentNew.email}`
           );
         })
         .catch((err) => {
