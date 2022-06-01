@@ -59,14 +59,9 @@ export function loginRequired(req, res, next) {
   }
 }
 
-export async function profile(req, res, next) {
+export function profile(req, res, next) {
   if (req.student) {
-    await Student.findOne({ _id: req.student._id }, function (err, student) {
-      if (err) {
-        return res.send(err);
-      }
-      return res.send(student);
-    });
+    res.send(req.student);
     next();
   } else {
     return res.status(401).json({

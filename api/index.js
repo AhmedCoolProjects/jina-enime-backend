@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import router from "./routers/index.js";
 import jsonwebtoken from "jsonwebtoken";
 import cors from "cors";
+import Student from "./models/StudentSchema.js";
 
 const app = express();
 dotenv.config();
@@ -34,7 +35,9 @@ app.use(function (req, res, next) {
       "RESTFULAPIs",
       function (err, decode) {
         if (err) req.student = undefined;
-        req.student = decode;
+        const { _id } = decode;
+        const student = Student.findById(_id);
+        req.student = student;
         next();
       }
     );
