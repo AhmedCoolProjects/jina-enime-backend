@@ -196,8 +196,8 @@ router.get("/", (req, res) => {
 //   });
 // });
 
-router.use("/student", studentRouter);
-router.use("/worker", workerRouter);
-router.use("/complaint", complainRouter);
+// router.use("/student", studentRouter);
+// router.use("/worker", workerRouter);
+// router.use("/complaint", complainRouter);
 
 export default router;
