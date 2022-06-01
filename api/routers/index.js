@@ -36,6 +36,7 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 const __dirname = path.resolve();
+const __dirname2 = path.dirname(import.meta.url);
 
 complainRouter.post("/photos", upload.single("photo"), (req, res) => {
   res.send(req.file.filename);
@@ -46,7 +47,7 @@ complainRouter.get("/photo/:filename", (req, res) => {
     { root: __dirname },
     (err) => {
       if (err) {
-        res.status(404).send(__dirname);
+        res.status(404).send(__dirname2);
       }
     }
   );
