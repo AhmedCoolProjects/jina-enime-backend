@@ -1,6 +1,8 @@
 import { Router } from "express";
 import jsonwebtoken from "jsonwebtoken";
 import multer from "multer";
+import path from "path";
+import fs from "fs";
 import Student from "../models/StudentSchema.js";
 import Worker from "../models/WorkerSchema.js";
 import Complaint from "../models/ComplaintSchema.js";
@@ -10,7 +12,6 @@ import {
   register,
   sendEmailVerification,
 } from "../controllers/studentController.js";
-import path from "path";
 
 const router = Router();
 const studentRouter = Router();
@@ -36,22 +37,39 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 const __dirname = path.resolve();
-const __dirname2 = path.dirname(import.meta.url);
 
 complainRouter.post("/photos", upload.single("photo"), (req, res) => {
   res.send(req.file.filename);
 });
 complainRouter.get("/photo/:filename", (req, res) => {
-  // res.sendFile(
-  //   `/uploads/${req.params.filename}`,
-  //   { root: __dirname },
-  //   (err) => {
-  //     if (err) {
-  //       res.status(404).send(__dirname2);
-  //     }
-  //   }
+  res.sendFile(
+    `/uploads/${req.params.filename}`,
+    { root: __dirname },
+    (err) => {
+      if (err) {
+        res.status(404).send("File not found");
+      }
+    }
+  );
+});
+
+complainRouter.get("/photos", (req, res) => {
+  // return list of files in uploads folder
+  fs.readdir("./uploads", (err, files) => {
+    if (err) {
+      res.status(500).send("Could not list the directory");
+    } else {
+      res.send(files);
+    }
+  });
+  // res.send(
+  //   fs.readdirSync(path.join(__dirname, "../uploads")).map((file) => {
+  //     return {
+  //       url: `/uploads/${file}`,
+  //       name: file,
+  //     };
+  //   })
   // );
-  res.sendFile(`file:///var/task/uploads/${req.params.filename}`);
 });
 
 // Student
