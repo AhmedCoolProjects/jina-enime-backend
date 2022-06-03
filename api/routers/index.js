@@ -16,7 +16,6 @@ const router = Router();
 const studentRouter = Router();
 const workerRouter = Router();
 const complainRouter = Router();
-// const APP_LINK = "https://jina-enime-backend.vercel.app/aploads";
 
 const __dirname = path.resolve();
 const path_to_uploads = path.join(__dirname, "/uploads");
@@ -40,7 +39,17 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 complainRouter.post("/photos", upload.single("photo"), (req, res) => {
-  res.send(req.file);
+  if (!req.file) {
+    res.send({
+      status: "error",
+      message: "No file uploaded",
+    });
+  }
+  res.send({
+    status: "success",
+    message: "File uploaded",
+    file: req.file,
+  });
 });
 complainRouter.get("/photo/:filename", (req, res) => {
   res.sendFile(path.join(path_to_uploads, req.params.filename), (err) => {
