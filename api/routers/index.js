@@ -49,6 +49,9 @@ complainRouter.post("/photos", upload.single("photo"), (req, res) => {
     status: "success",
     message: "File uploaded",
     file: req.file,
+    path:
+      "https://jina-enime-backend.vercel.app/api/complaint/photo/" +
+      req.file.filename,
   });
 });
 complainRouter.get("/photo/:filename", (req, res) => {
