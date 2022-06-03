@@ -55,7 +55,8 @@ complainRouter.get("/photo/:filename", (req, res) => {
 
 complainRouter.get("/photos", (req, res) => {
   // return list of files in uploads folder
-  fs.readdir("./uploads", (err, files) => {
+  const path_to_uploads = path.join(__dirname, "/uploads");
+  fs.readdir(path_to_uploads, (err, files) => {
     if (err) {
       res.status(500).send("Could not list the directory");
     } else {
