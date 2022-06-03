@@ -2,7 +2,6 @@ import { Router } from "express";
 import jsonwebtoken from "jsonwebtoken";
 import multer from "multer";
 import path from "path";
-import fs from "fs";
 import Student from "../models/StudentSchema.js";
 import Worker from "../models/WorkerSchema.js";
 import Complaint from "../models/ComplaintSchema.js";
@@ -19,9 +18,12 @@ const workerRouter = Router();
 const complainRouter = Router();
 // const APP_LINK = "https://jina-enime-backend.vercel.app/aploads";
 
+const __dirname = path.resolve();
+const path_to_uploads = path.join(__dirname, "/uploads");
+
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/");
+    cb(null, path_to_uploads);
   },
   filename: function (req, file, cb) {
     cb(
@@ -36,42 +38,29 @@ var storage = multer.diskStorage({
 });
 
 var upload = multer({ storage: storage });
-const __dirname = path.resolve();
 
 complainRouter.post("/photos", upload.single("photo"), (req, res) => {
-  res.send(req.file.filename);
+  res.send(req.file);
 });
 complainRouter.get("/photo/:filename", (req, res) => {
-  res.sendFile(
-    `/uploads/${req.params.filename}`,
-    { root: __dirname },
-    (err) => {
-      if (err) {
-        res.status(404).send("File not found");
-      }
-    }
-  );
-});
-
-complainRouter.get("/photos", (req, res) => {
-  // return list of files in uploads folder
-  const path_to_uploads = path.join(__dirname, "/uploads");
-  fs.readdir(path_to_uploads, (err, files) => {
+  res.sendFile(path.join(path_to_uploads, req.params.filename), (err) => {
     if (err) {
-      res.status(500).send("Could not list the directory");
-    } else {
-      res.send(files);
+      res.status(500).send(err);
     }
   });
-  // res.send(
-  //   fs.readdirSync(path.join(__dirname, "../uploads")).map((file) => {
-  //     return {
-  //       url: `/uploads/${file}`,
-  //       name: file,
-  //     };
-  //   })
-  // );
 });
+
+// complainRouter.get("/photos", (req, res) => {
+//   // return list of files in uploads folder
+//   const path_to_uploads = path.join(__dirname, "/uploads");
+//   fs.readdir(path_to_uploads, (err, files) => {
+//     if (err) {
+//       res.status(500).send("Could not list the directory");
+//     } else {
+//       res.send(files);
+//     }
+//   });
+// });
 
 // Student
 // Get All Students
