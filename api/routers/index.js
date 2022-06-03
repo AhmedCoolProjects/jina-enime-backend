@@ -165,6 +165,12 @@ complainRouter.get("/:id", async (req, res) => {
   const complaint = await Complaint.findById(req.params.id);
   res.send(complaint);
 });
+// Get complaint by Student ID
+complainRouter.get("/student/:id", async (req, res) => {
+  const complaint = await Complaint.find({ student: req.params.id });
+  res.send(complaint);
+});
+
 // Add complaint
 complainRouter.post("/", async (req, res) => {
   const complaint = new Complaint({
