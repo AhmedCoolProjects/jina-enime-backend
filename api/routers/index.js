@@ -170,39 +170,40 @@ complainRouter.post("/", async (req, res) => {
   const complaint = new Complaint({
     title: req.body.title,
     description: req.body.description,
-    status: req.body.status,
-    worker: req.body.worker,
     student: req.body.student,
-    date: req.body.date,
     image: req.body.image,
-    tags: req.body.tags,
     type: req.body.type,
+    need: req.body.need,
   });
   await complaint.save();
-  res.send(`Complaint ${complaint.title} added`);
+  res.json({
+    message: `Complaint ${complaint.title} added`,
+  });
 });
-// Update complaint
-complainRouter.post("/update/:id", async (req, res) => {
-  const complaint = await Complaint.findOneAndUpdate(
-    { _id: req.params.id },
-    {
-      title: req.body.title,
-      description: req.body.description,
-      status: req.body.status,
-      worker: req.body.worker,
-      student: req.body.student,
-      date: req.body.date,
-      image: req.body.image,
-      tags: req.body.tags,
-      type: req.body.type,
-    }
-  );
-  res.send(`Complaint ${complaint.title} updated`);
-});
+// Update complaint -----------------------------------
+// complainRouter.post("/update/:id", async (req, res) => {
+//   const complaint = await Complaint.findOneAndUpdate(
+//     { _id: req.params.id },
+//     {
+//       title: req.body.title,
+//       description: req.body.description,
+//       status: req.body.status,
+//       worker: req.body.worker,
+//       student: req.body.student,
+//       date: req.body.date,
+//       image: req.body.image,
+//       tags: req.body.tags,
+//       type: req.body.type,
+//     }
+//   );
+//   res.send(`Complaint ${complaint.title} updated`);
+// });
 // Delete complaint
 complainRouter.post("/delete/:id", async (req, res) => {
   const complaint = await Complaint.findByIdAndDelete(req.params.id);
-  res.send(`Complaint ${complaint.title} deleted`);
+  res.json({
+    message: `Complaint ${complaint.title} deleted`,
+  });
 });
 
 // Welcome
