@@ -18,7 +18,7 @@ const workerRouter = Router();
 const complainRouter = Router();
 
 const __dirname = path.resolve();
-const path_to_uploads = path.join(__dirname, "/uploads");
+const path_to_uploads = path.join(__dirname, "../../tmp/uploads");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
