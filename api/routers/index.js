@@ -11,6 +11,7 @@ import {
   register,
   sendEmailVerification,
 } from "../controllers/studentController.js";
+import mongoose from "mongoose";
 
 const router = Router();
 const studentRouter = Router();
@@ -167,7 +168,8 @@ complainRouter.get("/:id", async (req, res) => {
 });
 // Get complaint by Student ID
 complainRouter.get("/student/:id", async (req, res) => {
-  const complaint = await Complaint.find({ student: req.params.id });
+  const _id = mongoose.Types.ObjectId(req.params.id);
+  const complaint = await Complaint.find({ student: _id });
   res.send(complaint);
 });
 
